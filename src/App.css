@@ -21,14 +21,14 @@
   background-color: rgb(42, 42, 42);
 }
 
-#key1 {
+#clear {
   grid-column: 1 / span 2;
 }
 
-#key15 {
+#equals {
   grid-row-end: span 2;
 }
 
-#key16 {
+#zero {
   grid-column-start: span 2;
 }
