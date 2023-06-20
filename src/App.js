@@ -35,7 +35,7 @@ function TextDisplay({ entriesLine, resultsLine }) {
 				<p className="text-right w-fill">{entriesLine}</p>
 			</div>
 			<div className="flex flex-row justify-end items-center h-16 px-4">
-				<p className="text-4xl w-auto">{resultsLine.length == 0 ? 0 : resultsLine}</p>
+				<p id="display" className="text-4xl w-auto">{resultsLine.length == 0 ? 0 : resultsLine}</p>
 			</div>
 		</div>
 	);
@@ -50,6 +50,8 @@ export default function App() {
 	const [entriesLine, setEntriesLine] = useState([]);
 	// Creates state `resultLine` to display result to `TextDisplay`.
 	const [resultsLine, setResultsLine] = useState([]);
+	// Creates state `calcOutput` to track output of the calculator based on the equation.
+	const [calcOutput, setCalcOutput] = useState(null);
 	// Creates const `operatorLogic` to manage helper functions for each operator.
 	const operatorLogic = {
 		'/': handleDivision,
@@ -64,38 +66,93 @@ export default function App() {
 	function handleKeyInput(pressedKey) {
 		// Gets the helper function assigned to `pressedKey` in object `operatorLogic` and stores it in `operatorFunction`.
 		const operatorFunction = operatorLogic[pressedKey];
-		// Copies state `entriesLine` and assigns it to  `newEntriesLine`.
-		let newEntriesLine = [...entriesLine];
-		// Copies state `resultsLine` and assigns it to  `newResultsLine`.
-		let newResultsLine = [...resultsLine];
-
+		// Copies state `entriesLine` and assigns it to  `updatedEntries`.
+		let updatedEntries = [...entriesLine];
+		// Copies state `resultsLine` and assigns it to  `updatedResults`.
+		let updatedResults = [...resultsLine];
+		// Checks if `calcOutput` has a value assigned, indicating a previous calculation has occurred.
+		if (operatorFunction && calcOutput) {
+			// Stores the current `calcOutput` value in `updatedEntries` array for further calculations.
+			updatedEntries = [calcOutput];
+			// Resets the `calcOutput` value to null to prepare for the next calculation.
+			setCalcOutput(null);
+		}
+		// Checks if there is no `operatorFunction` and `calcOutput` has a value assigned.
+		if (!operatorFunction && calcOutput) {
+			// Resets both `updatedEntries` and `updatedResults` arrays, as well as `calcOutput` value, to clear any existing data for a fresh calculation.
+			updatedEntries = [];
+			updatedResults = [];
+			setCalcOutput(null);
+		}
 		// Checks if `operatorFunction` is null or has a value assigned to it.
 		if (operatorFunction) {
-			// Calls `operatorFunction` with `newEntriesLine`, `newResultsLine`, and `pressedKey` as arguments and assigns the output to `functionOutput`.
+			// Calls `operatorFunction` with `updatedEntries`, `updatedResults`, and `pressedKey` as arguments and assigns the output to `functionOutput`.
 			// The expected value for `functionOutput` is an object.
-			let functionOutput = operatorFunction(newEntriesLine, newResultsLine, pressedKey);
-			// Assigns the value from key `newEntries` to `newEntriesLine`.
-			newEntriesLine = functionOutput.newEntries;
-			// Assigns the value from key `newResults` to `newResultsLine`.
-			newResultsLine = functionOutput.newResults;
-			// Checks if the first element of `newResultsLine` is a `number`.
-		} else if (typeof newResultsLine[0] !== 'number') {
-			// Pushes `pressedKey` to array `newEntriesLine`.
-			newEntriesLine.push(pressedKey);
-			// Assigns an array with `pressedKey` as a single element to `newResultsLine`.
-			newResultsLine = [pressedKey];
+			let functionOutput = operatorFunction(updatedEntries, updatedResults);
+			// Assigns the value from key `newEntries` to `updatedEntries`.
+			updatedEntries = functionOutput.newEntries;
+			// Assigns the value from key `newResults` to `updatedResults`.
+			updatedResults = functionOutput.newResults;
+			// Checks if the first element of `updatedResults` is a `number`.
+		} else if (typeof updatedResults[0] !== 'number') {
+			// Pushes `pressedKey` to array `updatedEntries`.
+			updatedEntries.push(pressedKey);
+			// Assigns an array with `pressedKey` as a single element to `updatedResults`.
+			updatedResults = [pressedKey];
+			// Returns early if the first element of `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
+		} else if (updatedEntries[0] === 0 && pressedKey === 0) {
+			return;
+			// Checks if the first element of `updatedEntries` is '0' and `pressedKey` is not '0'. If true, assigns a new array to `updatedEntries` and `updatedResults` with `pressedKey` as a single element.
+		} else if (updatedEntries[0] === 0 && pressedKey !== 0) {
+			updatedEntries = [pressedKey];
+			updatedResults = [pressedKey];
 		} else {
-			// Pushes `pressedKey` to array `newEntriesLine`.
-			newEntriesLine.push(pressedKey);
-			// Pushes `pressedKey` to array `newResultsLine`.
-			newResultsLine.push(pressedKey);
+			// Pushes `pressedKey` to array `updatedEntries`.
+			updatedEntries.push(pressedKey);
+			// Pushes `pressedKey` to array `updatedResults`.
+			updatedResults.push(pressedKey);
 		}
 
-		// Sets state `entriesLine` to array `newEntriesLine`.
-		setEntriesLine(newEntriesLine);
-		// Sets state `resultsLine` to array `newResultsLine`.
-		setResultsLine(newResultsLine);
+		// Sets state `entriesLine` to array `updatedEntries`.
+		setEntriesLine(updatedEntries);
+		// Sets state `resultsLine` to array `updatedResults`.
+		setResultsLine(updatedResults);
 		return;
+	}
+
+	function handleEquals(entriesArr, resultsArr) {
+		// Handles case when equals button was already pressed and returns `entriesArr` and `resultsArr`.
+		if (calcOutput) {
+			return {
+				newEntries: entriesArr,
+				newResults: resultsArr
+			};
+		}
+		// Maps over the original equation and changes operators to their javascript equivalent. The new equation is then stored in `modifiedEquation`.
+		let modifiedEquation = entriesArr.map((item) =>{
+			if (item === 'x') {
+				return '*';
+			}
+			return item;
+		});
+		// Converts `modifiedEquation` to a string which is then evaluated by `eval()`. The result is then stored in `sum`.
+		let sum = eval(modifiedEquation.join(''));
+		setCalcOutput(sum);
+		return {
+			// Returns `newEntries` with the original equation copied and `sum` added to the end.
+			newEntries: [...entriesArr,'=',sum],
+			// Returns `newResults` as an array with a single element `sum`.
+			newResults: [sum]
+		};
+	}
+
+	function handleClear() {
+		setCalcOutput();
+		// When the `AC` button is pressed, it sets `newEntries` and `newResults` to empty arrays.
+		return {
+			newEntries: [],
+			newResults: []
+		};
 	}
 
 	return (
@@ -273,14 +330,6 @@ function handleSubtraction(entriesArr, resultsArr) {
 	}
 }
 
-function handleClear() {
-	// When the `AC` button is pressed, it sets `newEntries` and `newResults` to empty arrays.
-	return {
-		newEntries: [],
-		newResults: []
-	};
-}
-
 function handleDecimal(entriesArr, resultsArr) {
 	// Checks if `resultsArr` already has a decimal. If true, the function is returned early with the original arrays as values for `newEntries` and `newResults`.
 	if (resultsArr.find(element => element === '.')) {
@@ -294,8 +343,4 @@ function handleDecimal(entriesArr, resultsArr) {
 		newEntries: [...entriesArr,'.'],
 		newResults: [...resultsArr,'.']
 	};
-}
-
-function handleEquals(pressedKey) {
-	return pressedKey;
 }
