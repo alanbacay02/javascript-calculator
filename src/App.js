@@ -138,11 +138,11 @@ export default function App() {
 
 		// Handles cases when equation is incomplete.
 		switch(true) {
-			// Checks if the last two elements in `entriesArr` are both operands. When true, the last two items from `entriesArr` is removed.
+			// Checks if the last two elements in `entriesArr` are both operators. When true, the last two items from `entriesArr` is removed.
 			case typeof entriesArr.slice(-1)[0] !== 'number' && typeof entriesArr.slice(-2)[0] !== 'number':
 				entriesArr = [...entriesArr.slice(0, -2)];
 				break;
-			// Checks if the last element in `entriesArr` is an operand. When true, the last item in `entriesArr` is removed.
+			// Checks if the last element in `entriesArr` is an operator. When true, the last item in `entriesArr` is removed.
 			case typeof entriesArr.slice(-1)[0] !== 'number':
 				entriesArr = [...entriesArr.slice(0, -1)];
 		}
