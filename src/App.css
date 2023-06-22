@@ -1,11 +1,3 @@
-#grid-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background-color: rgb(35, 35, 35);
-  gap: 3px;
-  padding: 0 8px 8px;
-}
-
 #grid-container div {
   color: white;
   background-color: rgb(60, 60, 60);

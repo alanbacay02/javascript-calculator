@@ -19,7 +19,7 @@ function KeyPad({ handleKeyInput }) {
 		);
 	});
 	return (
-		<div id="grid-container" className="w-full h-full">
+		<div id="grid-container" className="grid grid-cols-4 gap-[3px] pt-0 pb-2 px-2">
 			{keyArray}
 		</div>
 	);
@@ -28,21 +28,22 @@ KeyPad.propTypes = {
 	handleKeyInput: PropTypes.func.isRequired
 };
 
-function TextDisplay({ entriesLine, resultsLine }) {
+function TextDisplay({ entriesLine, resultsLine, calcOutput }) {
 	return (
-		<div className="flex flex-col text-white bg-[#232323] w-fill">
-			<div className="flex flex-row justify-end items-center h-12 px-4">
-				<p className="text-right w-fill">{entriesLine}</p>
+		<div className="flex flex-col text-white pt-16 pb-10 w-fill">
+			<div className="flex flex-row justify-end items-center h-[24px] px-4">
+				<p className="text-right text-base w-fill">{entriesLine}</p>
 			</div>
-			<div className="flex flex-row justify-end items-center h-16 px-4">
-				<p id="display" className="text-4xl w-auto">{resultsLine.length == 0 ? 0 : resultsLine}</p>
+			<div className="flex flex-row justify-end items-center h-[40px] px-4">
+				<p id="display" className={`${calcOutput ? 'text-[#ec4274]' : 'text-white'} text-4xl w-auto`}>{resultsLine.length == 0 ? 0 : resultsLine}</p>
 			</div>
 		</div>
 	);
 }
 TextDisplay.propTypes = {
 	entriesLine: PropTypes.array.isRequired,
-	resultsLine: PropTypes.array
+	resultsLine: PropTypes.array,
+	calcOutput: PropTypes.number
 };
 
 export default function App() {
@@ -70,8 +71,18 @@ export default function App() {
 		let updatedEntries = [...entriesLine];
 		// Copies state `resultsLine` and assigns it to  `updatedResults`.
 		let updatedResults = [...resultsLine];
+		// Checks if `calcOutput` and `operatorFunction` has a value assigned, indicated a previous calculation has occured an an operator was pressed.
+		// Checks if pressed key is equal to a decimal.
+		if (operatorFunction && calcOutput && pressedKey === '.') {
+			// When true, updated entries is set to an array with a zero and decimal as elements.
+			updatedEntries = [0,'.'];
+			// Updated results is set to an array with a decimal as an element.
+			updatedResults = ['.'];
+			// Resets the `calcOutput` value to null to prepare for the next calculation.
+			setCalcOutput(null);
+		}
 		// Checks if `calcOutput` has a value assigned, indicating a previous calculation has occurred.
-		if (operatorFunction && calcOutput) {
+		if (operatorFunction && calcOutput && pressedKey !== '.') {
 			// Stores the current `calcOutput` value in `updatedEntries` array for further calculations.
 			updatedEntries = [calcOutput];
 			// Resets the `calcOutput` value to null to prepare for the next calculation.
@@ -102,10 +113,6 @@ export default function App() {
 			// Returns early if the first element of `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
 		} else if (updatedEntries[0] === 0 && pressedKey === 0) {
 			return;
-			// Checks if the first element of `updatedEntries` is '0' and `pressedKey` is not '0'. If true, assigns a new array to `updatedEntries` and `updatedResults` with `pressedKey` as a single element.
-		} else if (updatedEntries[0] === 0 && pressedKey !== 0) {
-			updatedEntries = [pressedKey];
-			updatedResults = [pressedKey];
 		} else {
 			// Pushes `pressedKey` to array `updatedEntries`.
 			updatedEntries.push(pressedKey);
@@ -168,9 +175,9 @@ export default function App() {
 	}
 
 	return (
-		<div className="App">
-			<div className="flex flex-col justify-center mt-20 my-auto mx-auto w-[500px] h-[650px]">
-				<TextDisplay entriesLine={entriesLine} resultsLine={resultsLine}/>
+		<div className="App mx-auto mt-20 w-[300px] h-fit bg-[#232323] rounded-md">
+			<div className="flex flex-col justify-center w-[100%] h-[100%]">
+				<TextDisplay entriesLine={entriesLine} resultsLine={resultsLine}  calcOutput={calcOutput}/>
 				<KeyPad handleKeyInput={handleKeyInput}/>
 			</div>
 		</div>
