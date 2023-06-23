@@ -81,11 +81,11 @@ export default function App() {
 			// Resets the `calcOutput` value to null to prepare for the next calculation.
 			setCalcOutput(null);
 		}
-		// Checks if `calcOutput` has a value assigned, indicating a previous calculation has occurred.
-		if (operatorFunction && calcOutput && pressedKey !== '.') {
-			// Stores the current `calcOutput` value in `updatedEntries` array for further calculations.
+		// Checks if an operator function is defined and if `calcOutput` has a value assigned, indicating that a previous calculation has occurred and further calculations can be performed.
+		if (operatorFunction && calcOutput && pressedKey !== '.' && pressedKey !== '=') {
+			// Stores the current `calcOutput` value in the `updatedEntries` array for future calculations.
 			updatedEntries = [calcOutput];
-			// Resets the `calcOutput` value to null to prepare for the next calculation.
+			// Resets the `calcOutput` value to null in preparation for the next calculation.
 			setCalcOutput(null);
 		}
 		// Checks if there is no `operatorFunction` and `calcOutput` has a value assigned.
