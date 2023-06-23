@@ -128,6 +128,14 @@ export default function App() {
 	}
 
 	function handleEquals(entriesArr, resultsArr) {
+		// Checks if `entriesArr` is empty. When true, function is returned early to avoid `=` being pushed into `entriesArr`.
+		if (entriesArr.length <= 0) {
+			return {
+				newEntries: entriesArr,
+				newResults: resultsArr
+			};
+		}
+
 		// Handles case when equals button was already pressed and returns `entriesArr` and `resultsArr`.
 		if (calcOutput) {
 			return {
