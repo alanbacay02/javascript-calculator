@@ -1,6 +1,13 @@
+/* .App div {
+  background-color: #232323;
+} */
+
 #grid-container div {
   color: white;
-  background-color: rgb(60, 60, 60);
+  /* background-color: rgb(60, 60, 60); */
+  background-color: #1d1d1d;
+  padding: 20px;
+  border-radius: 6px;
 }
 
 #grid-container div:hover {
@@ -15,12 +22,40 @@
 
 #clear {
   grid-column: 1 / span 2;
+  color: #ec4274 !important;
 }
 
 #equals {
   grid-row-end: span 2;
+  background-color: #98153c !important;
+}
+
+#equals:hover {
+  background-color: #8f1237 !important;
+}
+
+#equals:active {
+  background-color: #831133  !important;
 }
 
 #zero {
   grid-column-start: span 2;
+}
+
+#divide, #multiply, #subtract, #add {
+  background-color: inherit !important;
+  border: 2px solid #a52148;
+  padding: 0px !important;
+}
+
+#divide:hover, #multiply:hover, #subtract:hover, #add:hover {
+  background-color: rgb(45, 45, 45) !important;
+  border: 2px solid #b3234f !important;
+  padding: 0px !important;
+}
+
+#divide:active, #multiply:active, #subtract:active, #add:active {
+  background-color: rgb(42, 42, 42) !important;
+  border: none !important;
+  padding: 0px !important;
 }

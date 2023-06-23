@@ -10,16 +10,16 @@ function KeyPad({ handleKeyInput }) {
 	const keyArray = KEY.map((item, index) => {
 		return(
 			<div
-				className="table text-center text-xl p-5 rounded-md"
+				className="table text-center text-xl"
 				key={index + 1} 
 				id={KEY_ID[index]}
 				onClick={() => handleKeyInput(item)}>
-				<p className="table-cell align-middle select-none">{item}</p>
+				<p className="table-cell align-middle select-none p-0">{item}</p>
 			</div>
 		);
 	});
 	return (
-		<div id="grid-container" className="grid grid-cols-4 gap-[3px] pt-0 pb-2 px-2">
+		<div id="grid-container" className="grid grid-cols-4 gap-[8px] pt-0 pb-2 px-2">
 			{keyArray}
 		</div>
 	);
