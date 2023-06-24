@@ -110,8 +110,8 @@ export default function App() {
 			updatedEntries.push(pressedKey);
 			// Assigns an array with `pressedKey` as a single element to `updatedResults`.
 			updatedResults = [pressedKey];
-			// Returns early if the first element of `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
-		} else if (updatedEntries[0] === 0 && pressedKey === 0) {
+			// Returns early the only element in `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
+		} else if (updatedEntries.length === 1 && updatedEntries[0] === 0 && pressedKey === 0) {
 			return;
 		} else {
 			// Pushes `pressedKey` to array `updatedEntries`.
