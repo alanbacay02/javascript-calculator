@@ -10,16 +10,16 @@ function KeyPad({ handleKeyInput }) {
 	const keyArray = KEY.map((item, index) => {
 		return(
 			<div
-				className="table text-center text-xl"
+				className="table text-center text-xl px-5 py-3 md:py-5 rounded-md"
 				key={index + 1} 
 				id={KEY_ID[index]}
 				onClick={() => handleKeyInput(item)}>
-				<p className="table-cell align-middle select-none p-0">{item}</p>
+				<p className="table-cell align-middle select-none">{item}</p>
 			</div>
 		);
 	});
 	return (
-		<div id="grid-container" className="grid grid-cols-4 gap-[8px] pt-0 pb-2 px-2">
+		<div id="grid-container" className="grid grid-cols-4 gap-[8px] pt-0 pb-2 md:pb-3 px-2 md:px-3">
 			{keyArray}
 		</div>
 	);
@@ -30,7 +30,7 @@ KeyPad.propTypes = {
 
 function TextDisplay({ entriesLine, resultsLine, calcOutput }) {
 	return (
-		<div className="flex flex-col text-white pt-16 pb-10 w-fill">
+		<div className="flex flex-col text-white pt-16 md:pt-20 pb-10 md:pb-12 w-fill">
 			<div className="flex flex-row justify-end items-center h-[24px] px-4">
 				<p className="text-right text-base w-fill">{entriesLine}</p>
 			</div>
@@ -183,7 +183,7 @@ export default function App() {
 	}
 
 	return (
-		<div className="App mx-auto mt-20 w-[300px] h-fit bg-[#232323] rounded-md">
+		<div className="App mx-auto mt-16 w-[240px] md:w-[360px] h-[fit] bg-[#232323] rounded-md">
 			<div className="flex flex-col justify-center w-[100%] h-[100%]">
 				<TextDisplay entriesLine={entriesLine} resultsLine={resultsLine}  calcOutput={calcOutput}/>
 				<KeyPad handleKeyInput={handleKeyInput}/>
