@@ -31,11 +31,11 @@ KeyPad.propTypes = {
 function TextDisplay({ entriesLine, resultsLine, calcOutput }) {
 	return (
 		<div className="flex flex-col text-white pt-16 md:pt-20 pb-10 md:pb-12 w-fill">
-			<div className="flex flex-row justify-end px-4 relative">
-				<p className="text-right break-all text-[14px]">{entriesLine.length == 0 ? 0 : entriesLine}</p>
+			<div className="flex flex-row justify-end px-4">
+				<p className="text-right break-all text-[14px] md:text-lg">{entriesLine.length == 0 ? 0 : entriesLine}</p>
 			</div>
 			<div className="flex flex-row justify-end px-4">
-				<p id="display" className={`${calcOutput ? 'text-[#ec4274]' : 'text-white'} text-[23px] md:text-4xl text-right break-all`}>{resultsLine.length == 0 ? 0 : resultsLine}</p>
+				<p id="display" className={`${calcOutput ? 'text-[#ec4274]' : 'text-white'} text-[24px] md:text-4xl text-right break-all`}>{resultsLine.length == 0 ? 0 : resultsLine}</p>
 			</div>
 		</div>
 	);
@@ -117,6 +117,7 @@ export default function App() {
 			// Returns early the only element in `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
 		} else if (updatedEntries.length === 1 && updatedEntries[0] === 0 && pressedKey === 0) {
 			return;
+			// Sets `updatedEntries` and `updatedResults` to an array with `pressedKey` as a single element when the first digit in `updatedEntries` is '0'.
 		} else if (updatedEntries.length === 1 && updatedEntries[0] === 0 && pressedKey !== 0) {
 			updatedEntries = [pressedKey];
 			updatedResults = [pressedKey];
@@ -198,9 +199,9 @@ export default function App() {
 				</div>
 			</div>
 			<div className="flex justify-end gap-1 mx-auto my-1 pr-1 w-[240px] md:w-[360px]">
-				<a href="https://alanbacay.dev/" rel="noreferrer" target="_blank" className="text-[13px] text-white mt-0 pt-0 select-none">©alanbacay</a>
-				<a href="https://github.com/alanbacay02" rel="noreferrer" target="blank" className="icon-link my-auto text-[16px] px-[5px] py-[1px] rounded-md"><i className="fa fa-github"></i></a>
-				<a href="https://www.linkedin.com/in/alan-neale-bacay-ii-60aa48258/" rel="noreferrer" target="_blank" className="icon-link text-[16px] px-[5px] py-[1px] rounded-md"><i className="fa fa-linkedin"></i></a>
+				<a href="https://alanbacay.dev/" rel="noreferrer" target="_blank" className="text-[13px] md:text-[15px] text-white mt-0 pt-0 select-none">©alanbacay</a>
+				<a href="https://github.com/alanbacay02" rel="noreferrer" target="blank" className="icon-link my-auto text-[14px] md:text-[18px] px-[5px] py-[1px] rounded-md"><i className="fa fa-github"></i></a>
+				<a href="https://www.linkedin.com/in/alan-neale-bacay-ii-60aa48258/" rel="noreferrer" target="_blank" className="icon-link text-[14px] md:text-[18px] px-[5px] py-[1px] rounded-md"><i className="fa fa-linkedin"></i></a>
 			</div>
 		</div>
 	);
