@@ -70,5 +70,6 @@
 
 .icon-link {
   background-color: #1d1d1d;
-  color: #ec4274;
+  /* color: #ec4274; */
+  color: rgb(233, 233, 233);
 }

@@ -117,6 +117,9 @@ export default function App() {
 			// Returns early the only element in `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
 		} else if (updatedEntries.length === 1 && updatedEntries[0] === 0 && pressedKey === 0) {
 			return;
+		} else if (updatedEntries.length === 1 && updatedEntries[0] === 0 && pressedKey !== 0) {
+			updatedEntries = [pressedKey];
+			updatedResults = [pressedKey];
 		} else {
 			// Pushes `pressedKey` to array `updatedEntries`.
 			updatedEntries.push(pressedKey);
