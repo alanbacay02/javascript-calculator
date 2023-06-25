@@ -65,67 +65,57 @@ export default function App() {
 	};
 
 	function handleKeyInput(pressedKey) {
-		// Gets the helper function assigned to `pressedKey` in object `operatorLogic` and stores it in `operatorFunction`.
+		// Get the operator function assigned to `pressedKey` in the `operatorLogic` object and store it in `operatorFunction`.
 		const operatorFunction = operatorLogic[pressedKey];
 		// Copies state `entriesLine` and assigns it to  `updatedEntries`.
 		let updatedEntries = [...entriesLine];
 		// Copies state `resultsLine` and assigns it to  `updatedResults`.
 		let updatedResults = [...resultsLine];
-		// Checks if the length of `resultsLine` is greater than 14 and `pressedKey` is a number. When true, function is returned early to limit number inputs to 15.
+
+		// Limit number inputs to 15 by returning early if `resultsLine` length is greater than 14 and `pressedKey` is a number.
 		if (resultsLine.length > 14 && typeof pressedKey === 'number') {
 			return;
 		}
-		// Checks if `calcOutput` and `operatorFunction` has a value assigned, indicated a previous calculation has occured an an operator was pressed.
-		// Checks if pressed key is equal to a decimal.
+
+		// Handles decimal input when a previous calculation has occurred and an operator was pressed.
 		if (operatorFunction && calcOutput && pressedKey === '.') {
-			// When true, updated entries is set to an array with a zero and decimal as elements.
-			updatedEntries = [0,'.'];
-			// Updated results is set to an array with a decimal as an element.
-			updatedResults = ['.'];
-			// Resets the `calcOutput` value to null to prepare for the next calculation.
-			setCalcOutput(null);
+			updatedEntries = [0,'.']; // Set `updatedEntries` to an array with a zero and decimal as elements.
+			updatedResults = ['.']; // Set `updatedResults` to an array with a decimal as an element.
+			setCalcOutput(null); // Reset `calcOutput` value to null to prepare for the next calculation.
 		}
-		// Checks if an operator function is defined and if `calcOutput` has a value assigned, indicating that a previous calculation has occurred and further calculations can be performed.
+
+		// Handles further calculations when an operator function is defined and a previous calculation has occurred.
 		if (operatorFunction && calcOutput && pressedKey !== '.' && pressedKey !== '=') {
-			// Stores the current `calcOutput` value in the `updatedEntries` array for future calculations.
-			updatedEntries = [calcOutput];
-			// Resets the `calcOutput` value to null in preparation for the next calculation.
-			setCalcOutput(null);
+			updatedEntries = [calcOutput]; // Store the current `calcOutput` value in the `updatedEntries` array for further calculations.
+			setCalcOutput(null); // Reset `calcOutput` value to null in preparation for the next calculation.
 		}
-		// Checks if there is no `operatorFunction` and `calcOutput` has a value assigned.
+
+		// Clear existing data for a fresh calculation if there is no `operatorFunction` and `calcOutput` has a value assigned.
 		if (!operatorFunction && calcOutput) {
-			// Resets both `updatedEntries` and `updatedResults` arrays, as well as `calcOutput` value, to clear any existing data for a fresh calculation.
-			updatedEntries = [];
-			updatedResults = [];
-			setCalcOutput(null);
+			updatedEntries = []; // Reset `updatedEntries` array.
+			updatedResults = []; // Reset `updatedResults` array.
+			setCalcOutput(null); // Reset `calcOutput` value to null.
 		}
+
 		// Checks if `operatorFunction` is null or has a value assigned to it.
 		if (operatorFunction) {
 			// Calls `operatorFunction` with `updatedEntries`, `updatedResults`, and `pressedKey` as arguments and assigns the output to `functionOutput`.
 			// The expected value for `functionOutput` is an object.
 			let functionOutput = operatorFunction(updatedEntries, updatedResults);
-			// Assigns the value from key `newEntries` to `updatedEntries`.
-			updatedEntries = functionOutput.newEntries;
-			// Assigns the value from key `newResults` to `updatedResults`.
-			updatedResults = functionOutput.newResults;
-			// Checks if the first element of `updatedResults` is a `number`.
+			updatedEntries = functionOutput.newEntries; // Assigns the value from key `newEntries` to `updatedEntries`.
+			updatedResults = functionOutput.newResults; // Assigns the value from key `newResults` to `updatedResults`.
 		} else if (typeof updatedResults[0] !== 'number') {
-			// Pushes `pressedKey` to array `updatedEntries`.
+			// Push `pressedKey` to the `updatedEntries` array and assign an array with `pressedKey` as a single element to `updatedResults`.
 			updatedEntries.push(pressedKey);
-			// Assigns an array with `pressedKey` as a single element to `updatedResults`.
 			updatedResults = [pressedKey];
-			// Returns early the only element in `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
 		} else if (updatedEntries.length === 1 && updatedEntries[0] === 0 && pressedKey === 0) {
-			return;
-			// Sets `updatedEntries` and `updatedResults` to an array with `pressedKey` as a single element when the first digit in `updatedEntries` is '0'.
+			return; // Return early if the only element in `updatedEntries` is '0' and `pressedKey` is '0' to prevent multiple zeros.
 		} else if (updatedEntries.length === 1 && updatedEntries[0] === 0 && pressedKey !== 0) {
-			updatedEntries = [pressedKey];
-			updatedResults = [pressedKey];
+			updatedEntries = [pressedKey]; // Set `updatedEntries` to an array with `pressedKey` as a single element.
+			updatedResults = [pressedKey]; // Set `updatedResults` to an array with `pressedKey` as a single element
 		} else {
-			// Pushes `pressedKey` to array `updatedEntries`.
-			updatedEntries.push(pressedKey);
-			// Pushes `pressedKey` to array `updatedResults`.
-			updatedResults.push(pressedKey);
+			updatedEntries.push(pressedKey); // Pushes `pressedKey` to array `updatedEntries`.
+			updatedResults.push(pressedKey); // Pushes `pressedKey` to array `updatedResults`.
 		}
 
 		// Sets state `entriesLine` to array `updatedEntries`.
