@@ -1,10 +1,5 @@
-/* .App div {
-  background-color: #232323;
-} */
-
 #grid-container div {
   color: white;
-  /* background-color: rgb(60, 60, 60); */
   background-color: #1d1d1d;
 }
 
@@ -70,6 +65,5 @@
 
 .icon-link {
   background-color: #1d1d1d;
-  /* color: #ec4274; */
   color: rgb(233, 233, 233);
 }
