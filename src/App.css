@@ -57,3 +57,18 @@
   border: none !important;
   padding: 0px !important;
 }
+
+
+.container1 {
+  word-break: break-all;
+}
+
+.text-fit {
+  font-size: clamp(14px, 3vw, 24px);
+  text-align: right;
+}
+
+.icon-link {
+  background-color: #1d1d1d;
+  color: #ec4274;
+}

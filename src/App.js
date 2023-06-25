@@ -31,11 +31,11 @@ KeyPad.propTypes = {
 function TextDisplay({ entriesLine, resultsLine, calcOutput }) {
 	return (
 		<div className="flex flex-col text-white pt-16 md:pt-20 pb-10 md:pb-12 w-fill">
-			<div className="flex flex-row justify-end items-center h-[24px] px-4">
-				<p className="text-right text-base w-fill">{entriesLine}</p>
+			<div className="flex flex-row justify-end px-4 relative">
+				<p className="text-right break-all text-[14px]">{entriesLine.length == 0 ? 0 : entriesLine}</p>
 			</div>
-			<div className="flex flex-row justify-end items-center h-[40px] px-4">
-				<p id="display" className={`${calcOutput ? 'text-[#ec4274]' : 'text-white'} text-4xl w-auto`}>{resultsLine.length == 0 ? 0 : resultsLine}</p>
+			<div className="flex flex-row justify-end px-4">
+				<p id="display" className={`${calcOutput ? 'text-[#ec4274]' : 'text-white'} text-[23px] md:text-4xl text-right break-all`}>{resultsLine.length == 0 ? 0 : resultsLine}</p>
 			</div>
 		</div>
 	);
@@ -71,6 +71,10 @@ export default function App() {
 		let updatedEntries = [...entriesLine];
 		// Copies state `resultsLine` and assigns it to  `updatedResults`.
 		let updatedResults = [...resultsLine];
+		// Checks if the length of `resultsLine` is greater than 14 and `pressedKey` is a number. When true, function is returned early to limit number inputs to 15.
+		if (resultsLine.length > 14 && typeof pressedKey === 'number') {
+			return;
+		}
 		// Checks if `calcOutput` and `operatorFunction` has a value assigned, indicated a previous calculation has occured an an operator was pressed.
 		// Checks if pressed key is equal to a decimal.
 		if (operatorFunction && calcOutput && pressedKey === '.') {
@@ -183,10 +187,17 @@ export default function App() {
 	}
 
 	return (
-		<div className="App mx-auto mt-16 w-[240px] md:w-[360px] h-[fit] bg-[#232323] rounded-md">
-			<div className="flex flex-col justify-center w-[100%] h-[100%]">
-				<TextDisplay entriesLine={entriesLine} resultsLine={resultsLine}  calcOutput={calcOutput}/>
-				<KeyPad handleKeyInput={handleKeyInput}/>
+		<div>
+			<div className="App mx-auto mt-16 w-[240px] md:w-[360px] h-[fit] bg-[#232323] rounded-md">
+				<div className="flex flex-col justify-center w-[100%] h-[100%]">
+					<TextDisplay entriesLine={entriesLine} resultsLine={resultsLine}  calcOutput={calcOutput}/>
+					<KeyPad handleKeyInput={handleKeyInput}/>
+				</div>
+			</div>
+			<div className="flex justify-end gap-1 mx-auto my-1 pr-1 w-[240px] md:w-[360px]">
+				<a href="https://alanbacay.dev/" rel="noreferrer" target="_blank" className="text-[13px] text-white mt-0 pt-0 select-none">©alanbacay</a>
+				<a href="https://github.com/alanbacay02" rel="noreferrer" target="blank" className="icon-link my-auto text-[16px] px-[5px] py-[1px] rounded-md"><i className="fa fa-github"></i></a>
+				<a href="https://www.linkedin.com/in/alan-neale-bacay-ii-60aa48258/" rel="noreferrer" target="_blank" className="icon-link text-[16px] px-[5px] py-[1px] rounded-md"><i className="fa fa-linkedin"></i></a>
 			</div>
 		</div>
 	);
